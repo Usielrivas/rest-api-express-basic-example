@@ -1,8 +1,9 @@
 import { login, register } from "../controllers/auth.controller.js";
-import express from "express";
+import { Router } from "express";
 import { body } from "express-validator";
+import { validationAuth } from "../middlewares/validationAuth.js";
 
-const router = express.Router();
+const router = Router();
 
 router.post(
   "/login",
@@ -10,6 +11,7 @@ router.post(
     body("email", "email incorrect").trim().isEmail().normalizeEmail(),
     body("password", "format password incorrect").trim().isLength({ min: 6 }),
   ],
+  validationAuth,
   login
 );
 router.post(
@@ -26,6 +28,7 @@ router.post(
         return value;
       }),
   ],
+  validationAuth,
   register
 );
 
